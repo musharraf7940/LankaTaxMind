@@ -46,7 +46,7 @@ idna==3.18
 Jinja2==3.1.6
 joblib==1.5.3
 limits==5.8.0
-llvmlite==0.48.0
+
 lxml==6.1.1
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
@@ -56,12 +56,12 @@ msgpack==1.2.1
 msgspec==0.21.1
 narwhals==2.23.0
 networkx==3.6.1
-numba==0.66.0
+
 numpy==2.4.6
 openpyxl==3.1.5
 orjson==3.11.9
 packaging==26.2
-pandas==3.0.3
+
 pinecone==9.1.0
 proto-plus==1.28.0
 
@@ -83,8 +83,8 @@ regex==2026.6.28
 requests==2.34.2
 rich==15.0.0
 safetensors==0.8.0
-scikit-learn==1.9.0
-scipy==1.18.0
+
+
 sentence-transformers==5.6.0
 setuptools==81.0.0
 shap==0.52.0

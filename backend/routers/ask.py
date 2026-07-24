@@ -34,7 +34,7 @@ index = pc.Index(PINECONE_INDEX)
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device="cpu")
 
 PRIMARY_MODEL = "gemini-2.5-flash"
 FALLBACK_MODEL = "gemini-2.0-flash"
