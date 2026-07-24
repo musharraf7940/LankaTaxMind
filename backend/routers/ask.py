@@ -10,8 +10,7 @@ from slowapi.util import get_remote_address
 import os
 import time
 from dotenv import load_dotenv
-import numpy as np
-import shap
+
 from fastapi import UploadFile, File
 import fitz
 from docx import Document as DocxDocument
@@ -369,6 +368,9 @@ class ExplainResponse(BaseModel):
 @router.post("/explain", response_model=ExplainResponse)
 @limiter.limit("15/minute")
 async def explain_source(request: Request, body: ExplainRequest, authorization: str = Header(None)):
+
+    import numpy as np
+    import shap
 
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization token")

@@ -1,3 +1,5 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.12.1
 annotated-doc==0.0.4
 annotated-types==0.7.0
 anyio==4.14.1
@@ -96,7 +98,7 @@ sympy==1.14.0
 tenacity==9.1.4
 threadpoolctl==3.6.0
 tokenizers==0.22.2
-torch==2.12.1
+
 tqdm==4.68.4
 transformers==5.13.0
 typer==0.26.8
