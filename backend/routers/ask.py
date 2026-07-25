@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Header, Request
 from pydantic import BaseModel
-from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone
 from google import genai
 from google.genai import types
@@ -34,12 +33,15 @@ index = pc.Index(PINECONE_INDEX)
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-hf_token = os.getenv("HF_TOKEN")
-embedding_model = SentenceTransformer(
-    "sentence-transformers/all-MiniLM-L6-v2",
-    device="cpu",
-    token=hf_token
-)
+from huggingface_hub import InferenceClient
+
+HF_TOKEN = os.getenv("HF_TOKEN")
+hf_client = InferenceClient(token=HF_TOKEN)
+EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+
+def get_embedding(text: str):
+    result = hf_client.feature_extraction(text, model=EMBEDDING_MODEL_NAME)
+    return list(result)
 
 PRIMARY_MODEL = "gemini-2.5-flash"
 FALLBACK_MODEL = "gemini-2.0-flash"
@@ -182,7 +184,7 @@ async def ask_question(request: Request, query: QueryRequest, authorization: str
 
     detected_language, english_question = detect_and_translate(query.question)
 
-    query_vector = embedding_model.encode([english_question])[0].tolist()
+    query_vector = get_embedding(english_question)
     results = index.query(
         vector=query_vector,
         top_k=5,
@@ -387,10 +389,10 @@ async def explain_source(request: Request, body: ExplainRequest, authorization: 
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-    query_embedding = embedding_model.encode([body.question])[0]
+    query_embedding = np.array(get_embedding(body.question))
 
     def similarity_score(texts):
-        embeddings = embedding_model.encode(list(texts))
+        embeddings = np.array([get_embedding(t) for t in texts])
         scores = np.dot(embeddings, query_embedding) / (
             np.linalg.norm(embeddings, axis=1) * np.linalg.norm(query_embedding) + 1e-8
         )
@@ -493,7 +495,7 @@ async def ask_about_document(
 
     truncated_doc = " ".join(document_text.split()[:3000])
 
-    query_vector = embedding_model.encode([question])[0].tolist()
+    query_vector = get_embedding(question)
     results = index.query(vector=query_vector, top_k=3, include_metadata=True)
     matches = results.get("matches", [])
 
@@ -561,7 +563,7 @@ async def draft_document(request: Request, body: DraftRequest, authorization: st
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-    query_vector = embedding_model.encode([f"{body.document_type} {body.facts}"])[0].tolist()
+    query_vector = get_embedding(f"{body.document_type} {body.facts}")
     results = index.query(vector=query_vector, top_k=10, include_metadata=True)
     matches = results.get("matches", [])
 

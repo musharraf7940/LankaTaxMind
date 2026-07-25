@@ -1,5 +1,5 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.12.1
+
 annotated-doc==0.0.4
 annotated-types==0.7.0
 anyio==4.14.1
@@ -18,7 +18,7 @@ fastapi==0.139.0
 filelock==3.29.7
 firebase_admin==7.5.0
 fsspec==2026.6.0
-
+huggingface_hub==1.22.0
 google-api-core==2.31.0
 google-api-python-client==2.198.0
 google-auth==2.55.2
@@ -85,7 +85,7 @@ rich==15.0.0
 safetensors==0.8.0
 
 
-sentence-transformers==5.6.0
+
 setuptools==81.0.0
 shap==0.52.0
 shellingham==1.5.4
@@ -100,7 +100,7 @@ threadpoolctl==3.6.0
 tokenizers==0.22.2
 
 tqdm==4.68.4
-transformers==5.13.0
+
 typer==0.26.8
 typing-inspection==0.4.2
 typing_extensions==4.16.0
