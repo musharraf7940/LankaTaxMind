@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Send, FileText, AlertCircle, Copy, Check, Pencil, LogOut, Paperclip, Plus, MessageSquare, Trash2, Menu } from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import { LogOut } from "lucide-react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "./firebase";
 import {
@@ -24,7 +23,7 @@ import Sidebar from "./components/Sidebar";
 import ChatMessage from "./components/ChatMessage";
 import MessageInput from "./components/MessageInput";
 
-const API_URL = "http://127.0.0.1:8000/api/ask";
+const API_URL = `${process.env.REACT_APP_API_BASE_URL}/api/ask`;
 
 function App() {
   const [user, setUser] = useState(null);
@@ -195,7 +194,7 @@ setMessages([
       setTimeout(() => setLoadingStage("Preparing your analysis..."), 5000);
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/ask-document?question=${encodeURIComponent(question)}`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/ask-document?question=${encodeURIComponent(question)}`,
         formData,
         {
           headers: {
@@ -240,7 +239,7 @@ setMessages([
     try {
       const token = await auth.currentUser.getIdToken();
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/draft",
+        `${process.env.REACT_APP_API_BASE_URL}/api/draft`,
         { document_type: documentType, facts },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -399,7 +398,7 @@ const userConfirming = draftConfirmations.includes(input.trim().toLowerCase());
     try {
       const token = await auth.currentUser.getIdToken();
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/explain",
+        `${process.env.REACT_APP_API_BASE_URL}/api/explain`,
         { question, chunk_text: chunkText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
