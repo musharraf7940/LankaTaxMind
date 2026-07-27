@@ -41,7 +41,7 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 def get_embedding(text: str):
     result = hf_client.feature_extraction(text, model=EMBEDDING_MODEL_NAME)
-    return list(result)
+    return [float(x) for x in result]
 
 PRIMARY_MODEL = "gemini-2.5-flash"
 FALLBACK_MODEL = "gemini-2.0-flash"
